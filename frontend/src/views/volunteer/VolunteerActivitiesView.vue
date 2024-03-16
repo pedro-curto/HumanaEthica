@@ -47,13 +47,20 @@
                 color="blue"
                 v-on="on"
                 data-cy="writeAssessmentButton"
-                >fa-solid fa-pen-to-square</v-icon
-              >
+                @click="writeAssessment(item)"
+                >fa-solid fa-pen-to-square</v-icon>
             </template>
             <span>Write Assessment</span>
           </v-tooltip>
         </template>
       </v-data-table>
+      <assessment-dialog
+          v-if="currentInstitutionId && writeAssessmentDialog"
+          v-model="writeAssessmentDialog"
+          :institutionId="currentInstitutionId"
+          v-on:close-assessment-dialog="onCloseAssessmentDialog"
+          v-on:save-assessment="onSaveAssessment"
+      />
     </v-card>
   </div>
 </template>
@@ -63,13 +70,21 @@ import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
 import Activity from '@/models/activity/Activity';
 import { show } from 'cli-cursor';
+import AssessmentDialog from '@/views/volunteer/AssessmentDialog.vue';
+import Assessment from '@/models/assessment/Assessment';
 
 @Component({
-  methods: { show },
+  components: {
+    'assessment-dialog': AssessmentDialog,
+  },
+  methods: {show},
 })
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
+  assessments: Assessment[] = [];
   search: string = '';
+  currentInstitutionId: number | null = null;
+  writeAssessmentDialog: boolean = false;
   headers: object = [
     {
       text: 'Name',
@@ -158,8 +173,25 @@ export default class VolunteerActivitiesView extends Vue {
       }
     }
   }
+
+  writeAssessment(activity: Activity) {
+    this.currentInstitutionId = activity.institution.id;
+    this.writeAssessmentDialog = true;
+  }
+
   activityIsOver(activity: Activity) {
     return new Date(activity.endingDate) < new Date();
+  }
+
+  onCloseAssessmentDialog() {
+    this.currentInstitutionId = null;
+    this.writeAssessmentDialog = false;
+  }
+
+  onSaveAssessment(assessment: Assessment) {
+    this.assessments.unshift(assessment);
+    this.currentInstitutionId = null;
+    this.writeAssessmentDialog = false;
   }
 }
 </script>
