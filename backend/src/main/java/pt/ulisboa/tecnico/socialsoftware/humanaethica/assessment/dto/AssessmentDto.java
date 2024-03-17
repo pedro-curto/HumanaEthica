@@ -47,4 +47,20 @@ public class AssessmentDto {
     public void setReviewDate(String reviewDate) {
         this.reviewDate = reviewDate;
     }
+
+    public String getVolunteerName() {
+        return volunteerName;
+    }
+
+    public void setVolunteerName(String volunteerName) {
+        this.volunteerName = volunteerName;
+    }
+
+    public Integer getInstitutionId() {
+        return institutionId;
+    }
+
+    public void setInstitutionId(Integer institutionId) {
+        this.institutionId = institutionId;
+    }
 }
