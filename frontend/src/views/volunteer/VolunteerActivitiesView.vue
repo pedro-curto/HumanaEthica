@@ -27,6 +27,18 @@
           </v-chip>
         </template>
         <template v-slot:[`item.action`]="{ item }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon
+                class="mr-2 action-button"
+                color="orange"
+                v-on="on"
+                @click="enrollInActivity(item)"
+                >fa-solid fa-id-card-clip
+              </v-icon>
+            </template>
+            <span>Apply for Activity</span>
+          </v-tooltip>
           <v-tooltip v-if="item.state === 'APPROVED'" bottom>
             <template v-slot:activator="{ on }">
               <v-icon
@@ -61,6 +73,13 @@
           v-on:close-assessment-dialog="onCloseAssessmentDialog"
           v-on:save-assessment="onSaveAssessment"
       />
+      <enrollment-dialog
+        v-if="currentActivity && editEnrollmentDialog"
+        v-model="editEnrollmentDialog"
+        :activity="currentActivity"
+        v-on:save-enrollment="onSaveEnrollment"
+        v-on:close-enrollment-dialog="onCloseEnrollmentDialog"
+      />
     </v-card>
   </div>
 </template>
@@ -73,20 +92,31 @@ import { show } from 'cli-cursor';
 import AssessmentDialog from '@/views/volunteer/AssessmentDialog.vue';
 import Assessment from '@/models/assessment/Assessment';
 import Participation from '@/models/participation/Participation';
+import Enrollment from '@/models/enrollment/Enrollment';
+//import EnrollmentDialog from '@/views/volunteer/EnrollmentDialog.vue';
 
 @Component({
   components: {
     'assessment-dialog': AssessmentDialog,
   },
   methods: {show},
+  /*components: {
+    'enrollment-dialog': EnrollmentDialog,
+  },*/
+  methods: { show },
 })
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
   assessments: Assessment[] = [];
   volunteerParticipations: Participation[] = [];
+  enrollments: Enrollment[] = [];
   search: string = '';
   currentInstitutionId: number | null = null;
   writeAssessmentDialog: boolean = false;
+
+  currentActivity: Activity | null = null;
+  editEnrollmentDialog: boolean = false;
+
   headers: object = [
     {
       text: 'Name',
@@ -163,6 +193,13 @@ export default class VolunteerActivitiesView extends Vue {
     await this.$store.dispatch('clearLoading');
   }
 
+  async enrollInActivity(activity: Activity) {
+    if (activity.id !== null) {
+      this.currentActivity = activity;
+      this.editEnrollmentDialog = true;
+    }
+  }
+
   async reportActivity(activity: Activity) {
     if (activity.id !== null) {
       try {
@@ -208,6 +245,17 @@ export default class VolunteerActivitiesView extends Vue {
     this.assessments.unshift(assessment);
     this.currentInstitutionId = null;
     this.writeAssessmentDialog = false;
+  }
+
+  async onSaveEnrollment(enrollment: Enrollment) {
+    this.enrollments.unshift(enrollment);
+    this.editEnrollmentDialog = false;
+    this.currentActivity = null;
+  }
+
+  async onCloseEnrollmentDialog() {
+    this.editEnrollmentDialog = false;
+    this.currentActivity = null;
   }
 }
 </script>
