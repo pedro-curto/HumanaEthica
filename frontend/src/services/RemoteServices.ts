@@ -485,7 +485,7 @@ export default class RemoteServices {
       });
   }
 
-  static async getVolunteerEnrollments(userId: number) {
+  static async getVolunteerEnrollments() {
     return httpClient
       .get('enrollments/volunteer')
       .then((response) => {

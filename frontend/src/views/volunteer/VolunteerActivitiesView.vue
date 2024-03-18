@@ -28,7 +28,11 @@
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <v-tooltip bottom>
-            <template v-if="item.state === 'APPROVED' && isActivityActive(item)" v-slot:activator="{ on }">
+            <template
+              v-if="item.state === 'APPROVED' &&
+                isActivityActive(item) &&
+                isVolunteerEnrolledInActivity(item)"
+              v-slot:activator="{ on }">
               <v-icon
                 class="mr-2 action-button"
                 color="orange"
@@ -117,7 +121,7 @@ export default class VolunteerActivitiesView extends Vue {
   currentActivity: Activity | null = null;
   editEnrollmentDialog: boolean = false;
 
-  userEnrollmentMap: Map<Activity, boolean> = new Map<Activity, boolean>;
+  volunteerEnrollments: Enrollment[] = [];
 
   headers: object = [
     {
@@ -189,6 +193,9 @@ export default class VolunteerActivitiesView extends Vue {
       this.activities = await RemoteServices.getActivities();
       this.volunteerParticipations = await RemoteServices.getVolunteerParticipations();
       this.assessments = await RemoteServices.getVolunteerAssessments();
+
+      this.volunteerEnrollments =
+        await RemoteServices.getVolunteerEnrollments();
     } catch (error) {
       await this.$store.dispatch('error', error);
     }
@@ -197,6 +204,12 @@ export default class VolunteerActivitiesView extends Vue {
 
   isActivityActive(activity: Activity) {
     return new Date(activity.applicationDeadline) > new Date();
+  }
+
+  isVolunteerEnrolledInActivity(activity: Activity) {
+    return !this.volunteerEnrollments.some(
+      (enrollment) => enrollment.activityId === activity.id,
+    );
   }
 
   async enrollInActivity(activity: Activity) {
