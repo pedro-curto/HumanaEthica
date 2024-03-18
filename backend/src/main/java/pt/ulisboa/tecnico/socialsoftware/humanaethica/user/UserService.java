@@ -31,6 +31,7 @@ import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.dto.RegisterUserDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.dto.UserDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.repository.UserDocumentRepository;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.repository.UserRepository;
+import pt.ulisboa.tecnico.socialsoftware.humanaethica.participation.dto.ParticipationDto;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -204,6 +205,12 @@ public class UserService {
         Member member = (Member) authUser.getUser();
 
         return new InstitutionDto(member.getInstitution(), true, true);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public List<ParticipationDto> getParticipations(int userId) {
+        Volunteer volunteer = (Volunteer) userRepository.findById(userId).orElseThrow(() -> new HEException(ErrorMessage.USER_NOT_FOUND));
+        return volunteer.getParticipations().stream().map(ParticipationDto::new).collect(Collectors.toList());
     }
 
 }

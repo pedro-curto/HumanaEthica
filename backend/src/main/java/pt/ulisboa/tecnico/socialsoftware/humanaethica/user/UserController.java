@@ -22,6 +22,7 @@ import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.domain.User.Role;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.domain.UserDocument;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.dto.RegisterUserDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.dto.UserDto;
+import pt.ulisboa.tecnico.socialsoftware.humanaethica.participation.dto.ParticipationDto;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -101,4 +102,10 @@ public class UserController {
         return userService.getInstitution(userId);
     }
 
+    @GetMapping("/users/getParticipations")
+    @PreAuthorize("hasRole('ROLE_VOLUNTEER')")
+    public List<ParticipationDto> getVolunteerParticipations(Principal principal) {
+        int userId = ((AuthUser) ((Authentication) principal).getPrincipal()).getUser().getId();
+        return userService.getParticipations(userId);
+    }
 }
