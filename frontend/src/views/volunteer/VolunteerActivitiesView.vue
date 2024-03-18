@@ -28,7 +28,7 @@
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
+            <template v-if="item.state === 'APPROVED' && isActivityActive(item)" v-slot:activator="{ on }">
               <v-icon
                 class="mr-2 action-button"
                 color="orange"
@@ -117,6 +117,8 @@ export default class VolunteerActivitiesView extends Vue {
   currentActivity: Activity | null = null;
   editEnrollmentDialog: boolean = false;
 
+  userEnrollmentMap: Map<Activity, boolean> = new Map<Activity, boolean>;
+
   headers: object = [
     {
       text: 'Name',
@@ -191,6 +193,10 @@ export default class VolunteerActivitiesView extends Vue {
       await this.$store.dispatch('error', error);
     }
     await this.$store.dispatch('clearLoading');
+  }
+
+  isActivityActive(activity: Activity) {
+    return new Date(activity.applicationDeadline) > new Date();
   }
 
   async enrollInActivity(activity: Activity) {
