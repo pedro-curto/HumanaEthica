@@ -40,7 +40,7 @@
             </template>
             <span>Report Activity</span>
           </v-tooltip>
-          <v-tooltip v-if="activityIsOver(item)" bottom>
+          <v-tooltip v-if="checkVolunteerParticipations(item) && activityIsOver(item)" bottom>
             <template v-slot:activator="{ on }">
               <v-icon
                 class="mr-2 action-button"
@@ -72,6 +72,7 @@ import Activity from '@/models/activity/Activity';
 import { show } from 'cli-cursor';
 import AssessmentDialog from '@/views/volunteer/AssessmentDialog.vue';
 import Assessment from '@/models/assessment/Assessment';
+import Participation from '@/models/participation/Participation';
 
 @Component({
   components: {
@@ -82,6 +83,7 @@ import Assessment from '@/models/assessment/Assessment';
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
   assessments: Assessment[] = [];
+  volunteerParticipations: Participation[] = [];
   search: string = '';
   currentInstitutionId: number | null = null;
   writeAssessmentDialog: boolean = false;
@@ -153,6 +155,7 @@ export default class VolunteerActivitiesView extends Vue {
     await this.$store.dispatch('loading');
     try {
       this.activities = await RemoteServices.getActivities();
+      this.volunteerParticipations = await RemoteServices.getVolunteerParticipations();
     } catch (error) {
       await this.$store.dispatch('error', error);
     }
@@ -181,6 +184,12 @@ export default class VolunteerActivitiesView extends Vue {
 
   activityIsOver(activity: Activity) {
     return new Date(activity.endingDate) < new Date();
+  }
+
+  checkVolunteerParticipations(activity: Activity) {
+    return this.volunteerParticipations.some(
+      (participation) => participation.activityId === activity.id,
+    );
   }
 
   onCloseAssessmentDialog() {
