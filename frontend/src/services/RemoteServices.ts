@@ -516,11 +516,19 @@ export default class RemoteServices {
         throw Error(await this.errorMessage(error));
       });
   }
+
+  static async submitAssessment(assessment: Assessment) {
+    {
+      return httpClient.post(`/institutions/${assessment.institutionId}/assessments`, assessment)
         .then((response) => {
+          return new Assessment(response.data);
         })
         .catch(async (error) => {
+          throw Error(await this.errorMessage(error));
         });
 
+    }
+  }
   // Theme Controller
 
   static async getThemes(): Promise<Theme[]> {
