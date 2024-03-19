@@ -2,6 +2,7 @@
   <v-dialog v-model="dialog" persistent width="1300">
     <v-card>
       <v-card-title>Assessment</v-card-title>
+      <v-card-title>New Assessment</v-card-title>
       <v-card-text>
         <form>
           <v-text-field
@@ -11,6 +12,7 @@
             data-cy="reviewField"
           ></v-text-field>
           <v-card-actions>
+        <v-form ref="form" lazy-validation>
             <v-spacer></v-spacer>
           <v-btn
               class="white--text"
@@ -25,6 +27,7 @@
           >Close</v-btn>
           </v-card-actions>
         </form>
+        </v-form>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -34,6 +37,7 @@
 import {Vue, Component, Prop, Model} from 'vue-property-decorator';
 import Assessment from '@/models/assessment/Assessment';
 import Institution from '@/models/institution/Institution';
+import RemoteServices from '@/services/RemoteServices';
 
 @Component({})
 export default class AssessmentDialog extends Vue {

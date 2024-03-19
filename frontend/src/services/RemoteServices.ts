@@ -469,6 +469,7 @@ export default class RemoteServices {
       });
   }
 
+
   // Enrollment controller
 
   static async getActivityEnrollments(activityId: number) {
@@ -503,16 +504,22 @@ export default class RemoteServices {
 
   static async getVolunteerParticipations() {
     return httpClient
-        .get('/users/getParticipations')
+  static async getVolunteerAssessments() {
+    return httpClient
+      .get('/users/getAssessments')
+      .then((response) => {
+        return response.data.map((assessment: any) => {
+          return new Assessment(assessment);
+        });
+      })
+      .catch(async (error) => {
+        throw Error(await this.errorMessage(error));
+      });
+  }
         .then((response) => {
-            return response.data.map((participation: any) => {
-            return new Participation(participation);
-            });
         })
         .catch(async (error) => {
-            throw Error(await this.errorMessage(error));
         });
-  }
 
   // Theme Controller
 

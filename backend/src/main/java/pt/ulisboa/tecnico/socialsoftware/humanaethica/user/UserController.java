@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.domain.Activity;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.dto.ActivityDto;
+import pt.ulisboa.tecnico.socialsoftware.humanaethica.assessment.dto.AssessmentDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.auth.domain.AuthUser;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.exceptions.HEException;
@@ -74,8 +75,8 @@ public class UserController {
     @PostMapping("/users/registerInstitutionMember")
     @PreAuthorize("hasRole('ROLE_MEMBER')")
     public void registerMember(Principal principal,
-                               @Valid @RequestPart(value = "member") RegisterUserDto registerUserDto,
-                               @RequestParam(value = "file") MultipartFile document) throws IOException {
+            @Valid @RequestPart(value = "member") RegisterUserDto registerUserDto,
+            @RequestParam(value = "file") MultipartFile document) throws IOException {
         Member member = (Member) ((AuthUser) ((Authentication) principal).getPrincipal()).getUser();
 
         registerUserDto.setRole(Role.MEMBER);
@@ -83,8 +84,10 @@ public class UserController {
 
         userService.registerUser(registerUserDto, document);
     }
+
     @PostMapping("/users/registerVolunteer")
-    public void registerVolunteer(@Valid @RequestPart("volunteer") RegisterUserDto registerUserDto, @RequestParam(value = "file") MultipartFile document) throws IOException {
+    public void registerVolunteer(@Valid @RequestPart("volunteer") RegisterUserDto registerUserDto,
+            @RequestParam(value = "file") MultipartFile document) throws IOException {
         registerUserDto.setRole(Role.VOLUNTEER);
 
         userService.registerUser(registerUserDto, document);
@@ -108,4 +111,12 @@ public class UserController {
         int userId = ((AuthUser) ((Authentication) principal).getPrincipal()).getUser().getId();
         return userService.getParticipations(userId);
     }
+
+    @GetMapping("/users/getAssessments")
+    @PreAuthorize("hasRole('ROLE_VOLUNTEER')")
+    public List<AssessmentDto> getVolunteerAssessments(Principal principal) {
+        int userId = ((AuthUser) ((Authentication) principal).getPrincipal()).getUser().getId();
+        return userService.getAssessments(userId);
+    }
+
 }
