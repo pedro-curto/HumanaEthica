@@ -36,6 +36,20 @@
             <span>No</span>
           </div>
       </template>
+      <template v-slot:[`item.action`]="{ item }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon
+              class="mr-2 action-button"
+              @click="selectParticipant(item)"
+              v-on="on"
+              data-cy="selectParticipant"
+              >fa-solid fa-check
+            </v-icon>
+          </template>
+          <span>Select Participant</span>
+        </v-tooltip>
+      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -77,8 +91,14 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
       text: 'Application Date',
       value: 'enrollmentDateTime',
       align: 'left',
-      width: '5%',
+      width: '10%',
     },
+    {
+      text: 'Action',
+      value: 'action',
+      align: 'left',
+      width: '5%',
+    }
   ];
 
   async created() {
@@ -108,6 +128,10 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     return this.participants.some(
       (participation) => participation.activityId === activity.id,
     );
+  }
+
+  selectParticipant() {
+    return;
   }
 
 }
