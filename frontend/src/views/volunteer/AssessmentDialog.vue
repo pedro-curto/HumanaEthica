@@ -1,10 +1,9 @@
 <template>
   <v-dialog v-model="dialog" persistent width="1300">
     <v-card>
-      <v-card-title>Assessment</v-card-title>
       <v-card-title>New Assessment</v-card-title>
       <v-card-text>
-        <form>
+        <v-form ref="form" lazy-validation>
           <v-text-field
             v-model="newAssessment.review"
             label="Review"
@@ -12,7 +11,6 @@
             data-cy="reviewField"
           ></v-text-field>
           <v-card-actions>
-        <v-form ref="form" lazy-validation>
             <v-spacer></v-spacer>
           <v-btn
               class="white--text"
@@ -26,7 +24,6 @@
               @click="$emit('close-assessment-dialog')"
           >Close</v-btn>
           </v-card-actions>
-        </form>
         </v-form>
       </v-card-text>
     </v-card>
@@ -46,20 +43,16 @@ export default class AssessmentDialog extends Vue {
   newAssessment: Assessment = new Assessment();
 
   async created() {
-    // this.newAssessment.institutionId = this.institutionId; // TODO insert when created in assessment model
-    this.newAssessment.institutionId = this.institutionId; 
+    this.newAssessment.institutionId = this.institutionId;
     this.newAssessment.volunteerName = this.$store.getters.getUser.name;
   }
 
-  submit() {
-    this.$emit('onSubmit', this.newAssessment.review);
   async submit() {
-    if((this.$refs.form as Vue & { validate: () => boolean }).validate()){
-      try{
-        const reponse = await RemoteServices.submitAssessment(this.newAssessment);
-        this.$emit('save-assessment', this.newAssessment.review);
-      }
-      catch(error){
+    if ((this.$refs.form as Vue & { validate: () => boolean }).validate()) {
+      try {
+        const result = await RemoteServices.submitAssessment(this.newAssessment);
+        this.$emit('save-assessment', result);
+      } catch (error) {
         await this.$store.dispatch('error', error);
       }
     }

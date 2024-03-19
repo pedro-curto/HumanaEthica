@@ -504,12 +504,10 @@ export default class RemoteServices {
 
   static async getVolunteerParticipations() {
     return httpClient
-  static async getVolunteerAssessments() {
-    return httpClient
-      .get('/users/getAssessments')
+      .get('/users/getParticipations')
       .then((response) => {
-        return response.data.map((assessment: any) => {
-          return new Assessment(assessment);
+        return response.data.map((participation: any) => {
+        return new Participation(participation);
         });
       })
       .catch(async (error) => {
@@ -517,17 +515,28 @@ export default class RemoteServices {
       });
   }
 
+  static async getVolunteerAssessments() {
+    return httpClient
+        .get('/users/getAssessments')
+        .then((response) => {
+          return response.data.map((assessment: any) => {
+            return new Assessment(assessment);
+          });
+        })
+        .catch(async (error) => {
+          throw Error(await this.errorMessage(error));
+        });
+    }
+
   static async submitAssessment(assessment: Assessment) {
-    {
-      return httpClient.post(`/institutions/${assessment.institutionId}/assessments`, assessment)
+      return httpClient
+        .post(`/institutions/${assessment.institutionId}/assessments`, assessment)
         .then((response) => {
           return new Assessment(response.data);
         })
         .catch(async (error) => {
           throw Error(await this.errorMessage(error));
         });
-
-    }
   }
   // Theme Controller
 
