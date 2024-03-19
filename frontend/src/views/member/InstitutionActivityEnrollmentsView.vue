@@ -28,6 +28,14 @@
           >
         </v-card-title>
       </template>
+      <template v-slot:[`item.participating`]="{ item }">
+          <div v-if="isParticipating(item)" bottom>
+            <span>Yes</span>
+          </div>
+          <div v-else bottom>
+            <span>No</span>
+          </div>
+      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -37,11 +45,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
 import Activity from '@/models/activity/Activity';
 import Enrollment from '@/models/enrollment/Enrollment';
+import Participation from '@/models/participation/Participation';
 
 @Component({})
 export default class InstitutionActivityEnrollmentsView extends Vue {
   activity!: Activity;
   enrollments: Enrollment[] = [];
+  participants: Participation[] = [];
   search: string = '';
 
   headers: object = [
@@ -79,6 +89,9 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
         this.enrollments = await RemoteServices.getActivityEnrollments(
           this.activity.id,
         );
+        this.participants = await RemoteServices.getActivityParticipants(
+          this.activity.id,
+        );
       } catch (error) {
         await this.$store.dispatch('error', error);
       }
@@ -90,6 +103,13 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     await this.$store.dispatch('setActivity', null);
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
+  
+  isParticipating(activity: Activity) {
+    return this.participants.some(
+      (participation) => participation.activityId === activity.id,
+    );
+  }
+
 }
 </script>
 

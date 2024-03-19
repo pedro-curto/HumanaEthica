@@ -12,6 +12,7 @@ import RegisterMember from '@/models/member/RegisterMember';
 import AuthPasswordDto from '@/models/user/AuthPasswordDto';
 import Theme from '@/models/theme/Theme';
 import Enrollment from '@/models/enrollment/Enrollment';
+import Participation from '@/models/participation/Participation';
 import Assessment from '@/models/assessment/Assessment';
 import Participation from '@/models/participation/Participation';
 
@@ -485,17 +486,18 @@ export default class RemoteServices {
       });
   }
 
-  static async getVolunteerEnrollments() {
+  // Participation Controller
+  static async getActivityParticipants(activityId: number) {
     return httpClient
-      .get('enrollments/volunteer')
-      .then((response) => {
-        return response.data.map((enrollment: any) => {
-          return new Enrollment(enrollment);
-        });
-      })
-      .catch(async (error) => {
-        throw Error(await this.errorMessage(error));
+    .get(`/activities/${activityId}/participations`)
+    .then((response) => {
+      return response.data.map((participation: any) => {
+        return new Participation(participation);
       });
+    })
+    .catch(async (error) => {
+      throw Error(await this.errorMessage(error));
+    });
   }
 
   // Assessment Controller
