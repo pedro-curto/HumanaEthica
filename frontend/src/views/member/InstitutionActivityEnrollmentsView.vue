@@ -49,7 +49,19 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
       text: 'Motivation',
       value: 'motivation',
       align: 'left',
-      width: '50%',
+      width: '30%',
+    },
+    {
+      text: 'Volunteer Name',
+      value: 'volunteerName',
+      align: 'left',
+      width: '5%',
+    },
+    {
+      text: 'Participating',
+      value: 'participating',
+      align: 'left',
+      width: '5%',
     },
     {
       text: 'Application Date',
