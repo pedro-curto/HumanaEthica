@@ -6,6 +6,7 @@
         <v-form ref="form" lazy-validation>
           <v-text-field
             v-model="newAssessment.review"
+            :rules="[(v) => isReviewLongEnough(v) || 'Review must be at least 10 characters long',]"
             label="Review"
             required
             data-cy="reviewField"
@@ -13,6 +14,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
           <v-btn
+              :disabled="!(newAssessment.review && newAssessment.review.length >= 10)"
               class="white--text"
               color="orange"
               @click="submit"
@@ -56,7 +58,10 @@ export default class AssessmentDialog extends Vue {
         await this.$store.dispatch('error', error);
       }
     }
-    
+  }
+
+  isReviewLongEnough(review: string) {
+    return review && review.length >= 10;
   }
 
 }
