@@ -157,7 +157,7 @@ export default class VolunteerActivitiesView extends Vue {
     try {
       this.activities = await RemoteServices.getActivities();
       this.volunteerParticipations = await RemoteServices.getVolunteerParticipations();
-      this.volunteerPrevAssessments = await RemoteServices.getVolunteerAssessments();
+      this.assessments = await RemoteServices.getVolunteerAssessments();
     } catch (error) {
       await this.$store.dispatch('error', error);
     }
@@ -195,7 +195,7 @@ export default class VolunteerActivitiesView extends Vue {
   }
 
   checkVolunteerAssessedInstitution(activity: Activity) {
-    return this.volunteerPrevAssessments.some(
+    return this.assessments.some(
       (assessment) => assessment.institutionId === activity.institution.id,
     );
   }
@@ -207,7 +207,6 @@ export default class VolunteerActivitiesView extends Vue {
 
   async onSaveAssessment(assessment: Assessment) {
     this.assessments.unshift(assessment);
-    this.volunteerPrevAssessments = await RemoteServices.getVolunteerAssessments();
     this.currentInstitutionId = null;
     this.writeAssessmentDialog = false;
   }
