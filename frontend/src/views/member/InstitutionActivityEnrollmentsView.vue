@@ -37,7 +37,7 @@
           </div>
       </template>
       <template v-slot:[`item.action`]="{ item }">
-        <v-tooltip bottom>
+        <v-tooltip v-if="!isParticipating(item) && !isActivityFull()" bottom>
           <template v-slot:activator="{ on }">
             <v-icon
               class="mr-2 action-button"
@@ -124,13 +124,17 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
   
-  isParticipating(activity: Activity) {
+  isParticipating(enrollment: Enrollment) {
     return this.participants.some(
-      (participation) => participation.activityId === activity.id,
+      (participation) => participation.volunteerId === enrollment.volunteerId,
     );
   }
 
-  selectParticipant() {
+  isActivityFull() {
+    return this.participants.length >= this.activity.participantsNumberLimit;
+  }
+
+  selectParticipant(activity: Activity) {
     return;
   }
 
