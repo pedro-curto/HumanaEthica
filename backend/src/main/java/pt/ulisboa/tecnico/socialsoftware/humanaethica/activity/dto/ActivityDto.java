@@ -21,6 +21,8 @@ public class ActivityDto {
     private List<ThemeDto> themes;
     private InstitutionDto institution;
     private Integer numberOfEnrollments;
+    private Integer numberOfParticipations;
+
     public ActivityDto(){
     }
 
@@ -29,6 +31,7 @@ public class ActivityDto {
         setName(activity.getName());
         setRegion(activity.getRegion());
         setParticipantsNumberLimit(activity.getParticipantsNumberLimit());
+        setNumberOfParticipations(activity.getNumberOfParticipatingVolunteers());
         setDescription(activity.getDescription());
 
         this.themes = activity.getThemes().stream()
@@ -149,6 +152,14 @@ public class ActivityDto {
 
     public void setNumberOfEnrollments(Integer numberOfEnrollments) {
         this.numberOfEnrollments = numberOfEnrollments;
+    }
+
+    public Integer getNumberOfParticipations() {
+        return numberOfParticipations;
+    }
+
+    public void setNumberOfParticipations(Integer numberOfParticipations) {
+        this.numberOfParticipations = numberOfParticipations;
     }
 
     @Override
