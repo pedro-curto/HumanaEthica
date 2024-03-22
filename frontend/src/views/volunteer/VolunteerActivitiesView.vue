@@ -84,7 +84,6 @@ export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
   assessments: Assessment[] = [];
   volunteerParticipations: Participation[] = [];
-  volunteerPrevAssessments: Assessment[] = [];
   search: string = '';
   currentInstitutionId: number | null = null;
   writeAssessmentDialog: boolean = false;
@@ -205,7 +204,7 @@ export default class VolunteerActivitiesView extends Vue {
     this.writeAssessmentDialog = false;
   }
 
-  async onSaveAssessment(assessment: Assessment) {
+  onSaveAssessment(assessment: Assessment) {
     this.assessments.unshift(assessment);
     this.currentInstitutionId = null;
     this.writeAssessmentDialog = false;
