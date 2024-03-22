@@ -31,6 +31,12 @@ describe('Assessment', () => {
         // verify that the activity table has 6 instances
         cy.get('[data-cy="volunteerActivitiesTable"] tbody tr')
             .should('have.length', 6);
+        // verify that the first activity has the name "A1"
+        cy.get('[data-cy="volunteerActivitiesTable"] tbody tr')
+            .eq(0)
+            .children()
+            .eq(0)
+            .should('contain', "A1");
 
         cy.logout();
 
