@@ -66,6 +66,14 @@ describe('Assessment', () => {
         // verify that the assessment table has a single entry
         cy.get('[data-cy="institutionAssessmentsTable"] tbody tr')
             .should('have.length', 1);
+
+        // verify that the assessment has the correct review text
+        cy.get('[data-cy="institutionAssessmentsTable"] tbody tr')
+            .eq(0)
+            .children()
+            .eq(0)
+            .should('contain', REVIEW);
+
         cy.logout();
     });
 });
