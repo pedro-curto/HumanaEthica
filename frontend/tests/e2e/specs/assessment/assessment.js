@@ -56,7 +56,16 @@ describe('Assessment', () => {
             .should('not.exist');
 
         cy.logout();
-
-
+        // ------------ MEMBER TEST ------------
+        cy.demoMemberLogin();
+        // go to assessments view
+        cy.intercept('GET', '/institutions/*/assessments').as('getAssessments');
+        cy.get('[data-cy="institution"]').click();
+        cy.get('[data-cy="assessments"]').click();
+        cy.wait('@getAssessments');
+        // verify that the assessment table has a single entry
+        cy.get('[data-cy="institutionAssessmentsTable"] tbody tr')
+            .should('have.length', 1);
+        cy.logout();
     });
 });
