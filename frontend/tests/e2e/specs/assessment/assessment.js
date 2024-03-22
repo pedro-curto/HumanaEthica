@@ -38,6 +38,23 @@ describe('Assessment', () => {
             .eq(0)
             .should('contain', "A1");
 
+        // assess the first activity
+        cy.get('[data-cy="volunteerActivitiesTable"] tbody tr')
+            .eq(0)
+            .find('[data-cy="writeAssessmentButton"]')
+            .click();
+        // fill the assessment form review field
+        cy.get('[data-cy="reviewField"]').type(REVIEW);
+        // save the form
+        cy.get('[data-cy="saveButton"]').click();
+        // check that the request was done
+        cy.wait('@createAssessment');
+        // check that the assessment was created
+        cy.get('[data-cy="volunteerActivitiesTable"] tbody tr')
+            .eq(0)
+            .find('[data-cy="writeAssessmentButton"]')
+            .should('not.exist');
+
         cy.logout();
 
 
