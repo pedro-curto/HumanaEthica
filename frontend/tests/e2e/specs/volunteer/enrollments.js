@@ -39,4 +39,23 @@ describe('Enrollment', () => {
             .eq(0).find('[data-cy="applyButton"]').should('not.exist');
         cy.logout();
     });
+
+    it('check activities table', () => {
+        // ------------ MEMBER TEST (PART 1) ------------
+        cy.demoMemberLogin();
+
+        // intercept get institutions
+        cy.intercept('GET', '/users/*/getInstitution').as('getInstitutions');
+
+        cy.get('[data-cy="institution"]').click();
+        cy.get('[data-cy="activities"]').click();
+        cy.wait('@getInstitutions');
+
+        // check that the activities table has 3 rows
+        cy.get('[data-cy="memberActivitiesTable"] tbody tr').should('have.length', 3);
+
+        // check that the first activity has 0 applications
+        cy.get('[data-cy="memberActivitiesTable"] tbody tr').eq(0).find('[data-cy="applications"]').should('contain', '0');
+        cy.logout();
+    });
 });
