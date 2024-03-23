@@ -7,7 +7,6 @@ describe('Volunteer', () => {
     cy.logout();
   });
 
-  it('close', () => {
-
+  it('close', () => {
   });
 });
