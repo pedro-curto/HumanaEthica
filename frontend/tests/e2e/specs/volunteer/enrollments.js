@@ -55,7 +55,7 @@ describe('Enrollment', () => {
         cy.get('[data-cy="memberActivitiesTable"] tbody tr').should('have.length', 3);
 
         // check that the first activity has 0 applications
-        cy.get('[data-cy="memberActivitiesTable"] tbody tr').eq(0).find('[data-cy="applications"]').should('contain', '0');
+        cy.get('[data-cy="memberActivitiesTable"] tbody tr').eq(0).find('[data-cy="showEnrollments"]').should('contain', '0');
         cy.logout();
     });
 });
