@@ -611,18 +611,16 @@ export default class RemoteServices {
       });
   }
 
-/*  static async registerEnrollment(userId: number, activity: Activity, enrollment: Enrollment) {
+  static async registerEnrollment(userId: number, activity: Activity, enrollment: Enrollment): Promise<Enrollment> {
     return httpClient
-      .post(`/activities/${activity.id}/enrollments`, enrollment)
-      .then((response) => {
-        return new Enrollment(response.data);
-      })
-      .catch(async (error) => {
-        throw Error(await this.errorMessage(error));
-      });
+        .post(`/activities/${activity.id}/enrollments`, enrollment)
+        .then((response) => {
+          return new Enrollment(response.data);
+        })
+        .catch(async (error) => {
+          throw Error(await this.errorMessage(error));
+        });
   }
-*/
-  // Error
 
   static async errorMessage(error: any): Promise<string> {
     if (error.message === 'Network Error') {
