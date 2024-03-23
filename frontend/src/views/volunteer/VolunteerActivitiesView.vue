@@ -121,8 +121,6 @@ export default class VolunteerActivitiesView extends Vue {
   currentActivity: Activity | null = null;
   editEnrollmentDialog: boolean = false;
 
-  volunteerEnrollments: Enrollment[] = [];
-
   headers: object = [
     {
       text: 'Name',
@@ -194,7 +192,7 @@ export default class VolunteerActivitiesView extends Vue {
       this.volunteerParticipations = await RemoteServices.getVolunteerParticipations();
       this.assessments = await RemoteServices.getVolunteerAssessments();
 
-      this.volunteerEnrollments =
+      this.enrollments =
         await RemoteServices.getVolunteerEnrollments();
     } catch (error) {
       await this.$store.dispatch('error', error);
@@ -207,7 +205,7 @@ export default class VolunteerActivitiesView extends Vue {
   }
 
   isVolunteerEnrolledInActivity(activity: Activity) {
-    return !this.volunteerEnrollments.some(
+    return !this.enrollments.some(
       (enrollment) => enrollment.activityId === activity.id,
     );
   }
