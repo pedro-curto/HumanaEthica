@@ -38,6 +38,7 @@
                 color="orange"
                 v-on="on"
                 @click="enrollInActivity(item)"
+                data-cy="applyButton"
                 >fa-solid fa-id-card-clip
               </v-icon>
             </template>
@@ -97,7 +98,7 @@ import AssessmentDialog from '@/views/volunteer/AssessmentDialog.vue';
 import Assessment from '@/models/assessment/Assessment';
 import Participation from '@/models/participation/Participation';
 import Enrollment from '@/models/enrollment/Enrollment';
-//import EnrollmentDialog from '@/views/volunteer/EnrollmentDialog.vue';
+import EnrollmentDialog from '@/views/volunteer/EnrollmentDialog.vue';
 
 @Component({
   components: {
@@ -107,7 +108,6 @@ import Enrollment from '@/models/enrollment/Enrollment';
   /*components: {
     'enrollment-dialog': EnrollmentDialog,
   },*/
-  methods: { show },
 })
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
