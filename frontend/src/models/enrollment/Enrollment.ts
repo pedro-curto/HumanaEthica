@@ -1,5 +1,4 @@
 import { ISOtoString } from '@/services/ConvertDateService';
-import Activity from '@/models/activity/Activity';
 
 export default class Enrollment {
   id: number | null = null;
