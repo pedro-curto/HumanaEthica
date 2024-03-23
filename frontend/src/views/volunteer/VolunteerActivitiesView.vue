@@ -35,7 +35,7 @@
               v-slot:activator="{ on }">
               <v-icon
                 class="mr-2 action-button"
-                color="orange"
+                color="blue"
                 v-on="on"
                 @click="enrollInActivity(item)"
                 data-cy="applyButton"
@@ -81,6 +81,7 @@
       <enrollment-dialog
         v-if="currentActivity && editEnrollmentDialog"
         v-model="editEnrollmentDialog"
+        data-cy="enrollmentDialog"
         :activity="currentActivity"
         v-on:save-enrollment="onSaveEnrollment"
         v-on:close-enrollment-dialog="onCloseEnrollmentDialog"

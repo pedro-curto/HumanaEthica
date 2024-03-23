@@ -12,6 +12,7 @@
               v-model="newEnrollment.motivation"
               :rules="[v => !!v || 'Motivation is required', v => (v && v.length >= 10) || 'Motivation must be at least 10 characters']"
               label="Motivation"
+              data-cy="motivationInput"
               required
           ></v-textarea>
         </v-form>
