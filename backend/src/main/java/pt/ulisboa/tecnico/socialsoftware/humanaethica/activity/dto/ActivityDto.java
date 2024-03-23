@@ -46,7 +46,7 @@ public class ActivityDto {
 
         }
 
-        numberOfEnrollments = activity.getEnrollments().size();
+        setNumberOfEnrollments(activity.getEnrollments().size());
     }
 
     public void setThemes(List<ThemeDto> themes) {

@@ -44,7 +44,7 @@ export default class Activity {
         this.formattedApplicationDeadline = ISOtoString(
           jsonObj.applicationDeadline,
         );
-      this.numberOfEnrollments = 0;
+      this.numberOfEnrollments = jsonObj.numberOfEnrollments;
     }
   }
 }
