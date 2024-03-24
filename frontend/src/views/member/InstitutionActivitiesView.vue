@@ -54,13 +54,13 @@
         </v-tooltip>
       </template>
     </v-data-table>
-    <participation-dialog
+    <activity-dialog
       v-if="currentActivity && editActivityDialog"
       v-model="editActivityDialog"
-      :participation="currentActivity"
+      :activity="currentActivity"
       :themes="themes"
-      v-on:save-participation="onSaveActivity"
-      v-on:close-participation-dialog="onCloseActivityDialog"
+      v-on:save-activity="onSaveActivity"
+      v-on:close-activity-dialog="onCloseActivityDialog"
     />
   </v-card>
 </template>
