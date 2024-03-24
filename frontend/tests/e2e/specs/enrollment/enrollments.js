@@ -8,8 +8,8 @@ describe('Enrollment', () => {
         cy.deleteAllButArs();
     });
 
-    it('check activities table', () => {
-        // ------------ MEMBER TEST (PART 1) ------------
+    it('create enrollment', () => {
+        // ------------ MEMBER TEST (PART 1): Check Activity Table ------------
         cy.demoMemberLogin();
 
         // intercept get institutions
@@ -33,13 +33,17 @@ describe('Enrollment', () => {
             .eq(10)
             .should('contain', 0);
         cy.logout();
-    });
-
-    it('apply to the first activity', () => {
+        
+        // ------------ VOLUNTEER TEST: apply to the first activity ------------
         const MOTIVATION = 'I would like to participate in this activity because I love to spend time with the elderly.';
-        // ------------ VOLUNTEER TEST ------------
         cy.demoVolunteerLogin()
 
+        // intercept create enrollment request and inject date values in the request body
+        cy.intercept('POST', '/activities/*/enrollments', (req) => {
+          req.body = {
+            motivation: MOTIVATION,
+          };
+        }).as('createEnrollment');
         // intercept get activities request
         cy.intercept('GET', '/activities').as('getActivities');
         // go to volunteer activities view
@@ -61,12 +65,53 @@ describe('Enrollment', () => {
         // save
         cy.get('[data-cy="saveEnrollment"]').click();
         // check if the application was successful
-        // TODO
+        cy.wait('@createEnrollment')
         // verify that the apply button does not exist anymore
         cy.get('[data-cy="volunteerActivitiesTable"] tbody tr')
             .eq(0)
             .find('[data-cy="applyButton"]')
             .should('not.exist');
+        cy.logout();
+    
+        // ------------ MEMBER TEST (PART 2): Check Activity Table again ------------
+        cy.demoMemberLogin();
+
+        // intercept get institutions request
+        cy.intercept('GET', '/users/*/getInstitution').as('getInstitutions');
+        // go to institution activities view
+        cy.get('[data-cy="institution"]').click();
+        cy.get('[data-cy="activities"]').click();
+        // check request was done
+        cy.wait('@getInstitutions');
+
+        // check that the first activity has 1 application1
+        cy.get('[data-cy="memberActivitiesTable"] tbody tr')
+            .eq(1)
+            .children()
+            .eq(10)
+            .should('contain', 1);
+        
+        // intercept get activity enrollments request
+        cy.intercept('GET', '/activities/*/enrollments').as('showEnrollments');
+        // check the activtiy's enrollment table
+        cy.get('[data-cy="memberActivitiesTable"] tbody tr')
+            .eq(0)
+            .find('[data-cy="showEnrollments"]')
+            .click();
+            // check request was done
+        cy.wait('@showEnrollments');
+        // check if the table has one entry
+        cy.get('[data-cy="activityEnrollmentsTable"] tbody tr')
+            .should('have.length', 1)
+            .eq(0)
+            .children()
+            .should('have.length', 2);
+        // check if that entry has the expected motivation
+        cy.get('[data-cy="activityEnrollmentsTable"] tbody tr')
+            .eq(0)
+            .children()
+            .eq(0)
+            .should('contain', MOTIVATION)
         cy.logout();
     });
 });
