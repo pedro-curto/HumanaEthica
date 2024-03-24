@@ -500,6 +500,17 @@ export default class RemoteServices {
     });
   }
 
+  static async registerParticipation(userId: number, activity: Activity, participation: Participation) {
+    return httpClient
+      .post(`/activities/${activity.id}/participations`, participation)
+      .then((response) => {
+        return new Participation(response.data);
+      })
+      .catch(async (error) => {
+        throw Error(await this.errorMessage(error));
+      });
+  }
+
   // Assessment Controller
 
   static async getInstitutionAssessments(

@@ -41,7 +41,7 @@
           <template v-slot:activator="{ on }">
             <v-icon
               class="mr-2 action-button"
-              @click="selectParticipant(item)"
+              @click="newParticipation()"
               v-on="on"
               data-cy="selectParticipant"
               >fa-solid fa-check
@@ -51,6 +51,14 @@
         </v-tooltip>
       </template>
     </v-data-table>
+    <participation-dialog
+      v-if="currentParticipation && editParticipationDialog"
+      v-model="editParticipationDialog"
+      :participation="currentParticipation"
+      :activity="activity"
+      v-on:save-participation="onSaveParticipation"
+      v-on:close-participation-dialog="onCloseParticipationDialog"
+    />
   </v-card>
 </template>
 
@@ -60,13 +68,21 @@ import RemoteServices from '@/services/RemoteServices';
 import Activity from '@/models/activity/Activity';
 import Enrollment from '@/models/enrollment/Enrollment';
 import Participation from '@/models/participation/Participation';
+import ParticipationDialog from '@/views/member/ParticipationDialog.vue';
 
-@Component({})
+@Component({
+  components: {
+    'participation-dialog': ParticipationDialog,
+  },
+})
 export default class InstitutionActivityEnrollmentsView extends Vue {
   activity!: Activity;
   enrollments: Enrollment[] = [];
   participants: Participation[] = [];
   search: string = '';
+
+  currentParticipation: Participation | null = null;
+  editParticipationDialog: boolean = false;
 
   headers: object = [
     {
@@ -134,8 +150,23 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     return this.participants.length >= this.activity.participantsNumberLimit;
   }
 
-  selectParticipant(activity: Activity) {
-    return;
+  newParticipation() {
+    this.currentParticipation = new Participation();
+    this.editParticipationDialog = true;
+  }
+
+  onCloseParticipationDialog() {
+    this.currentParticipation = null;
+    this.editParticipationDialog = false;
+  }
+
+  async onSaveParticipation(participation: Participation) {
+    this.participants = this.participants.filter(
+      (p) => p.id !== participation.id,
+    );
+    this.participants.unshift(participation);
+    this.editParticipationDialog = false;
+    this.currentParticipation = null;
   }
 
 }
