@@ -55,12 +55,12 @@
       </template>
     </v-data-table>
     <participation-dialog
-      v-if="currentParticipation && editParticipationDialog"
-      v-model="editParticipationDialog"
-      :participation="currentParticipation"
+      v-if="currentActivity && editActivityDialog"
+      v-model="editActivityDialog"
+      :participation="currentActivity"
       :themes="themes"
-      v-on:save-participation="onSaveParticipation"
-      v-on:close-participation-dialog="onCloseParticipationDialog"
+      v-on:save-participation="onSaveActivity"
+      v-on:close-participation-dialog="onCloseActivityDialog"
     />
   </v-card>
 </template>
@@ -116,12 +116,6 @@ export default class InstitutionActivitiesView extends Vue {
       value: 'description',
       align: 'left',
       width: '30%',
-    },
-    {
-      text: 'Number of Participations',
-      value: 'numberOfParticipations',
-      align: 'left',
-      width: '5%',
     },
     {
       text: 'State',
