@@ -104,11 +104,9 @@ import EnrollmentDialog from '@/views/volunteer/EnrollmentDialog.vue';
 @Component({
   components: {
     'assessment-dialog': AssessmentDialog,
+    'enrollment-dialog': EnrollmentDialog,
   },
   methods: {show},
-  /*components: {
-    'enrollment-dialog': EnrollmentDialog,
-  },*/
 })
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];

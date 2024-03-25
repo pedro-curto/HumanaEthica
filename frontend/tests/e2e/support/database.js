@@ -190,19 +190,19 @@ Cypress.Commands.add('createEnrollmentEntities', () => {
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(1, "Enrollment is open", "A1", 1),
+    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTupleEnrollment(1, "Enrollment is open", "A1", 1),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(2, "Enrollment is open and it is already enrolled", "A2", 2),
+    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTupleEnrollment(2, "Enrollment is open and it is already enrolled", "A2", 2),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(3, "Enrollment is closed", "A3", 3),
+    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTupleEnrollment(3, "Enrollment is closed", "A3", 3),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMNS + generateEnrollmentTuple(5),
+    query: "INSERT INTO " + ENROLLMENT_COLUMNS + generateEnrollmentTupleEnrollment(5),
     credentials: credentials,
   })
 })
@@ -272,7 +272,7 @@ function generateParticipationTuple(id, rating, activity_id, volunteer_id) {
 }
 
 
-function generateActivityTuple(id, motivation, name, participantsNumberLimit) {
+function generateActivityTupleEnrollment(id, motivation, name, participantsNumberLimit) {
   return "VALUES ('"
     + id + "', '2024-08-06 17:58:21.402146', '2024-08-06 17:58:21.402146', '"
     + motivation + "', '2024-08-08 17:58:21.402146', '"
@@ -280,7 +280,7 @@ function generateActivityTuple(id, motivation, name, participantsNumberLimit) {
     + participantsNumberLimit + "', 'Lisbon', '2024-08-07 17:58:21.402146', 'APPROVED', '1')"
 }
 
-function generateEnrollmentTuple(id) {
+function generateEnrollmentTupleEnrollment(id) {
   return "VALUES ('"
   + id + "', '2024-02-06 18:51:37.595713', 'sql-inserted-motivation',	'2','3')";
 }
