@@ -500,7 +500,7 @@ export default class RemoteServices {
     });
   }
 
-  static async registerParticipation(userId: number, activity: Activity, participation: Participation) {
+  static async registerParticipation(activity: Activity, participation: Participation) {
     return httpClient
       .post(`/activities/${activity.id}/participations`, participation)
       .then((response) => {

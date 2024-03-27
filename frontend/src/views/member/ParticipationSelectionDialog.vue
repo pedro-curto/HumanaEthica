@@ -66,13 +66,6 @@
     newParticipation: Participation = new Participation();
     cypressCondition: boolean = false;
 
-    get canSave(): boolean {
-        return (
-          this.cypressCondition ||
-          (!!this.newParticipation.rating)
-        );
-    }
-
     async created() {
       this.newParticipation = new Participation();
       this.newParticipation.volunteerId = this.enrollment.volunteerId;
@@ -90,7 +83,6 @@
         try {
           const result =
             await RemoteServices.registerParticipation(
-              this.$store.getters.getUser.id,
               this.activity!,
               this.newParticipation,
             );
