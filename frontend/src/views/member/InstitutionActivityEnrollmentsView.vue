@@ -30,10 +30,10 @@
       </template>
       <template v-slot:[`item.participating`]="{ item }">
           <div v-if="isParticipating(item)" bottom>
-            <span>Yes</span>
+            <span>true</span>
           </div>
           <div v-else bottom>
-            <span>No</span>
+            <span>false</span>
           </div>
       </template>
       <template v-slot:[`item.action`]="{ item }">

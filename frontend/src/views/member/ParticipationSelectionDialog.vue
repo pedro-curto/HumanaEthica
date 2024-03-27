@@ -79,6 +79,7 @@
     }
   
     isRatingValid(value: any) {
+      if (value === undefined || value === '') return true;
       if (!/^\d+$/.test(value)) return false;
       const parsedValue = parseInt(value);
       return parsedValue >= 1 && parsedValue <= 5;
