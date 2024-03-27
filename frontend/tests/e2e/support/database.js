@@ -12,9 +12,6 @@ const AUTH_USERS_COLUMNS = "auth_users (auth_type, id, active, email, username, 
 const ACTIVITY_COLUMNS = "activity (id, application_deadline, creation_date, description, ending_date, name, participants_number_limit, region, starting_date, state, institution_id)";
 const ENROLLMENT_COLUMNS = "enrollment (id, enrollment_date_time, motivation, activity_id, volunteer_id)";
 const PARTICIPATION_COLUMNS = "participation (id, acceptance_date, rating, activity_id, volunteer_id)";
-const ACTIVITY_COLUMNS = "activity (id, application_deadline, creation_date, description, ending_date, name, participants_number_limit, region, starting_date, state, institution_id)";
-const ENROLLMENT_COLUMS = "enrollment (id, enrollment_date_time, motivation, activity_id, volunteer_id)"
-const PARTICIPATION_COLUMNS = "participation (id, acceptance_date, rating, activity_id, volunteer_id)";
 
 const now = new Date();
 const tomorrow = new Date(now);
@@ -256,27 +253,27 @@ Cypress.Commands.add('createParticipations', () => {
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(1, "Has vacancies", "A1", 2),
+    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTupleEnrollment(1, "Has vacancies", "A1", 2),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(2, "Has no vacancies", "A2", 1),
+    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTupleEnrollment(2, "Has no vacancies", "A2", 1),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(1,"2024-02-06 18:51:37.595713", "Has vacancies and do not participate" ,1 ,3),
+    query: "INSERT INTO " + ENROLLMENT_COLUMNS + generateEnrollmentTupleParticiaption(1,"2024-02-06 18:51:37.595713", "Has vacancies and do not participate" ,1 ,3),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(2, "2024-02-06 19:51:37.595713", "Has vacancies and participate"	,1 ,4),
+    query: "INSERT INTO " + ENROLLMENT_COLUMNS + generateEnrollmentTupleParticiaption(2, "2024-02-06 19:51:37.595713", "Has vacancies and participate"	,1 ,4),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(3, "2024-02-06 18:51:37.595713", "Has no vacancies and participate" ,2 ,3),
+    query: "INSERT INTO " + ENROLLMENT_COLUMNS + generateEnrollmentTupleParticiaption(3, "2024-02-06 18:51:37.595713", "Has no vacancies and participate" ,2 ,3),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(4, "2024-02-06 20:51:37.595713", "Has no vacancies and do not participate" ,2 ,5),
+    query: "INSERT INTO " + ENROLLMENT_COLUMNS + generateEnrollmentTupleParticiaption(4, "2024-02-06 20:51:37.595713", "Has no vacancies and do not participate" ,2 ,5),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
@@ -319,7 +316,7 @@ function generateActivityTuple(id, motivation, name, participantsNumberLimit) {
     + participantsNumberLimit + "', 'Lisbon', '2024-08-07 17:58:21.402146', 'APPROVED', '1')"
 }
 
-function generateEnrollmentTuple(id, enrollment_date_time, motivation, activity_id, volunteer_id) {
+function generateEnrollmentTupleParticiaption(id, enrollment_date_time, motivation, activity_id, volunteer_id) {
   return "VALUES ('"
   + id + "', '"
   + enrollment_date_time + "', '"
@@ -368,16 +365,6 @@ function generateEnrollmentTuple(id, activity_id, volunteer_id) {
       + activity_id + "', '"
       + volunteer_id + "')";
 }
-
-function generateParticipationTuple(id, rating, activity_id, volunteer_id) {
-  return "VALUES ('"
-      + id + "', '"
-      + "2024-02-06 18:51:37.595713', '"
-      + rating + "', '"
-      + activity_id + "', '"
-      + volunteer_id + "')";
-}
-
 
 function generateActivityTupleEnrollment(id, motivation, name, participantsNumberLimit) {
   return "VALUES ('"
