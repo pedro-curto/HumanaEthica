@@ -24,7 +24,7 @@ describe('Enrollment', () => {
             .should('have.length', 3)
             .eq(0)
             .children()
-            .should('have.length', 12)
+            .should('have.length', 13)
 
         // check that the first activity has 0 applications
         cy.get('[data-cy="memberActivitiesTable"] tbody tr')
@@ -105,7 +105,7 @@ describe('Enrollment', () => {
             .should('have.length', 1)
             .eq(0)
             .children()
-            .should('have.length', 2);
+            .should('have.length', 5);
         // check if that entry has the expected motivation
         cy.get('[data-cy="activityEnrollmentsTable"] tbody tr')
             .eq(0)

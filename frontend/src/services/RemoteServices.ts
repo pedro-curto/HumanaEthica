@@ -12,7 +12,6 @@ import RegisterMember from '@/models/member/RegisterMember';
 import AuthPasswordDto from '@/models/user/AuthPasswordDto';
 import Theme from '@/models/theme/Theme';
 import Enrollment from '@/models/enrollment/Enrollment';
-import Participation from '@/models/participation/Participation';
 import Assessment from '@/models/assessment/Assessment';
 import Participation from '@/models/participation/Participation';
 
@@ -476,6 +475,19 @@ export default class RemoteServices {
   static async getActivityEnrollments(activityId: number) {
     return httpClient
       .get(`/activities/${activityId}/enrollments`)
+      .then((response) => {
+        return response.data.map((enrollment: any) => {
+          return new Enrollment(enrollment);
+        });
+      })
+      .catch(async (error) => {
+        throw Error(await this.errorMessage(error));
+      });
+  }
+
+  static async getVolunteerEnrollments() {
+    return httpClient
+      .get('enrollments/volunteer')
       .then((response) => {
         return response.data.map((enrollment: any) => {
           return new Enrollment(enrollment);
