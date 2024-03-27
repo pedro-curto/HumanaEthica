@@ -41,7 +41,7 @@
           <template v-slot:activator="{ on }">
             <v-icon
               class="mr-2 action-button"
-              @click="newParticipation()"
+              @click="newParticipation(item)"
               v-on="on"
               data-cy="selectParticipant"
               >fa-solid fa-check
@@ -52,9 +52,9 @@
       </template>
     </v-data-table>
     <participation-dialog
-      v-if="currentParticipation && editParticipationDialog"
+      v-if="currentEnrollment && editParticipationDialog"
       v-model="editParticipationDialog"
-      :participation="currentParticipation"
+      :enrollment="currentEnrollment"
       :activity="activity"
       v-on:save-participation="onSaveParticipation"
       v-on:close-participation-dialog="onCloseParticipationDialog"
@@ -68,11 +68,11 @@ import RemoteServices from '@/services/RemoteServices';
 import Activity from '@/models/activity/Activity';
 import Enrollment from '@/models/enrollment/Enrollment';
 import Participation from '@/models/participation/Participation';
-import ParticipationDialog from '@/views/member/ParticipationDialog.vue';
+import ParticipationSelectionDialog from '@/views/member/ParticipationSelectionDialog.vue';
 
 @Component({
   components: {
-    'participation-dialog': ParticipationDialog,
+    'participation-dialog': ParticipationSelectionDialog,
   },
 })
 export default class InstitutionActivityEnrollmentsView extends Vue {
@@ -81,7 +81,7 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
   participants: Participation[] = [];
   search: string = '';
 
-  currentParticipation: Participation | null = null;
+  currentEnrollment: Enrollment | null = null;
   editParticipationDialog: boolean = false;
 
   headers: object = [
@@ -150,23 +150,20 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     return this.participants.length >= this.activity.participantsNumberLimit;
   }
 
-  newParticipation() {
-    this.currentParticipation = new Participation();
+  newParticipation(enrollment: Enrollment) {
+    this.currentEnrollment = enrollment
     this.editParticipationDialog = true;
   }
 
   onCloseParticipationDialog() {
-    this.currentParticipation = null;
+    this.currentEnrollment = null;
     this.editParticipationDialog = false;
   }
 
   async onSaveParticipation(participation: Participation) {
-    this.participants = this.participants.filter(
-      (p) => p.id !== participation.id,
-    );
     this.participants.unshift(participation);
     this.editParticipationDialog = false;
-    this.currentParticipation = null;
+    this.currentEnrollment = null;
   }
 
 }

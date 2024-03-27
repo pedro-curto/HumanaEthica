@@ -46,14 +46,21 @@
     </v-dialog>
   </template>
   <script lang="ts">
-import { Vue, Component, Prop, Model } from 'vue-property-decorator';
-import Participation from '@/models/participation/Participation';
-import Activity from '@/models/activity/Activity';
-import RemoteServices from '@/services/RemoteServices';
+
+  import { Vue, Component, Prop, Model } from 'vue-property-decorator';
+  import RemoteServices from '@/services/RemoteServices';
+  import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+  import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
+  import { ISOtoString } from '@/services/ConvertDateService';
+  import Participation from '@/models/participation/Participation';
+  import Enrollment from '@/models/enrollment/Enrollment';
+  import Activity from '@/models/activity/Activity';
   
-  @Component({})
-  export default class ParticipationDialog extends Vue {
+  Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
+  @Component({methods: { ISOtoString },})
+  export default class ParticipationSelectionDialog extends Vue {
     @Model('dialog', Boolean) dialog!: boolean;
+    @Prop({ type: Enrollment, required: true }) readonly enrollment!: Enrollment;
     @Prop({ type: Activity, required: true }) readonly activity!: Activity;
   
     newParticipation: Participation = new Participation();
@@ -64,6 +71,11 @@ import RemoteServices from '@/services/RemoteServices';
           this.cypressCondition ||
           (!!this.newParticipation.rating)
         );
+    }
+
+    async created() {
+      this.newParticipation = new Participation();
+      this.newParticipation.volunteerId = this.enrollment.volunteerId;
     }
   
     isRatingValid(value: any) {
