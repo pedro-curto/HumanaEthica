@@ -256,27 +256,27 @@ Cypress.Commands.add('createParticipations', () => {
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(1, "Has 1vacancies", "A1", 2),
+    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(1, "Has vacancies", "A1", 2),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(2, "Has no 2vacancies", "A2", 1),
+    query: "INSERT INTO " + ACTIVITY_COLUMNS + generateActivityTuple(2, "Has no vacancies", "A2", 1),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(1, "Has 3vacancies and do not participate" ,1 ,3),
+    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(1,"2024-02-06 18:51:37.595713", "Has vacancies and do not participate" ,1 ,3),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(2, "Has 4vacancies and participate"	,1 ,4),
+    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(2, "2024-02-06 19:51:37.595713", "Has vacancies and participate"	,1 ,4),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(3, "Has no 5vacancies and participate" ,2 ,3),
+    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(3, "2024-02-06 18:51:37.595713", "Has no vacancies and participate" ,2 ,3),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(4, "Has no 6vacancies and do not participate" ,2 ,5),
+    query: "INSERT INTO " + ENROLLMENT_COLUMS + generateEnrollmentTuple(4, "2024-02-06 20:51:37.595713", "Has no vacancies and do not participate" ,2 ,5),
     credentials: credentials,
   })
   cy.task('queryDatabase',  {
@@ -319,9 +319,10 @@ function generateActivityTuple(id, motivation, name, participantsNumberLimit) {
     + participantsNumberLimit + "', 'Lisbon', '2024-08-07 17:58:21.402146', 'APPROVED', '1')"
 }
 
-function generateEnrollmentTuple(id, motivation, activity_id, volunteer_id) {
+function generateEnrollmentTuple(id, enrollment_date_time, motivation, activity_id, volunteer_id) {
   return "VALUES ('"
-  + id + "', '2024-02-06 18:51:37.595713', '"
+  + id + "', '"
+  + enrollment_date_time + "', '"
   + motivation +  "', '"
   + activity_id +  "', '"
   + volunteer_id +  "')";
