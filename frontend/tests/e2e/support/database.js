@@ -308,14 +308,6 @@ function generateInstitutionTuple(id) {
       + id + "', 't', 'abca428c09862e89', '2022-08-06 17:58:21.402146','demo_institution@mail.com', 'DEMO INSTITUTION', '000000000', '2024-02-06 17:58:21.402134')";
 }
 
-function generateActivityTuple(id, motivation, name, participantsNumberLimit) {
-  return "VALUES ('"
-    + id + "', '2024-08-06 17:58:21.402146', '2024-08-06 17:58:21.402146', '"
-    + motivation + "', '2024-08-08 17:58:21.402146', '"
-    + name + "', '"
-    + participantsNumberLimit + "', 'Lisbon', '2024-08-07 17:58:21.402146', 'APPROVED', '1')"
-}
-
 function generateEnrollmentTupleParticiaption(id, enrollment_date_time, motivation, activity_id, volunteer_id) {
   return "VALUES ('"
   + id + "', '"
